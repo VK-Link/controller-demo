@@ -18,7 +18,6 @@ limitations under the License.
 package v1beta1
 
 import (
-	"context"
 	time "time"
 
 	stablev1beta1 "github.com/VK-Link/controller-demo/pkg/apis/stable/v1beta1"
@@ -61,13 +60,13 @@ func NewFilteredCronTabInformer(client versioned.Interface, namespace string, re
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.StableV1beta1().CronTabs(namespace).List(context.TODO(), options)
+				return client.StableV1beta1().CronTabs(namespace).List(options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.StableV1beta1().CronTabs(namespace).Watch(context.TODO(), options)
+				return client.StableV1beta1().CronTabs(namespace).Watch(options)
 			},
 		},
 		&stablev1beta1.CronTab{},

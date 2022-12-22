@@ -25,10 +25,8 @@ import (
 )
 
 // CronTabLister helps list CronTabs.
-// All objects returned here must be treated as read-only.
 type CronTabLister interface {
 	// List lists all CronTabs in the indexer.
-	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1beta1.CronTab, err error)
 	// CronTabs returns an object that can list and get CronTabs.
 	CronTabs(namespace string) CronTabNamespaceLister
@@ -59,13 +57,10 @@ func (s *cronTabLister) CronTabs(namespace string) CronTabNamespaceLister {
 }
 
 // CronTabNamespaceLister helps list and get CronTabs.
-// All objects returned here must be treated as read-only.
 type CronTabNamespaceLister interface {
 	// List lists all CronTabs in the indexer for a given namespace.
-	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1beta1.CronTab, err error)
 	// Get retrieves the CronTab from the indexer for a given namespace and name.
-	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1beta1.CronTab, error)
 	CronTabNamespaceListerExpansion
 }

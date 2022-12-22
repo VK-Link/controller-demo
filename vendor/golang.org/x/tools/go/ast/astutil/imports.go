@@ -22,11 +22,8 @@ func AddImport(fset *token.FileSet, f *ast.File, path string) (added bool) {
 // If name is not empty, it is used to rename the import.
 //
 // For example, calling
-//
 //	AddNamedImport(fset, f, "pathpkg", "path")
-//
 // adds
-//
 //	import pathpkg "path"
 func AddNamedImport(fset *token.FileSet, f *ast.File, name, path string) (added bool) {
 	if imports(f, name, path) {
@@ -273,15 +270,14 @@ func DeleteNamedImport(fset *token.FileSet, f *ast.File, name, path string) (del
 			}
 			if j > 0 {
 				lastImpspec := gen.Specs[j-1].(*ast.ImportSpec)
-				lastLine := fset.PositionFor(lastImpspec.Path.ValuePos, false).Line
-				line := fset.PositionFor(impspec.Path.ValuePos, false).Line
+				lastLine := fset.Position(lastImpspec.Path.ValuePos).Line
+				line := fset.Position(impspec.Path.ValuePos).Line
 
 				// We deleted an entry but now there may be
 				// a blank line-sized hole where the import was.
-				if line-lastLine > 1 || !gen.Rparen.IsValid() {
+				if line-lastLine > 1 {
 					// There was a blank line immediately preceding the deleted import,
-					// so there's no need to close the hole. The right parenthesis is
-					// invalid after AddImport to an import statement without parenthesis.
+					// so there's no need to close the hole.
 					// Do nothing.
 				} else if line != fset.File(gen.Rparen).LineCount() {
 					// There was no blank line. Close the hole.

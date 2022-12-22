@@ -18,8 +18,6 @@ limitations under the License.
 package fake
 
 import (
-	"context"
-
 	v1beta1 "github.com/VK-Link/controller-demo/pkg/apis/stable/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -40,7 +38,7 @@ var crontabsResource = schema.GroupVersionResource{Group: "stable.example.com", 
 var crontabsKind = schema.GroupVersionKind{Group: "stable.example.com", Version: "v1beta1", Kind: "CronTab"}
 
 // Get takes name of the cronTab, and returns the corresponding cronTab object, and an error if there is any.
-func (c *FakeCronTabs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.CronTab, err error) {
+func (c *FakeCronTabs) Get(name string, options v1.GetOptions) (result *v1beta1.CronTab, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(crontabsResource, c.ns, name), &v1beta1.CronTab{})
 
@@ -51,7 +49,7 @@ func (c *FakeCronTabs) Get(ctx context.Context, name string, options v1.GetOptio
 }
 
 // List takes label and field selectors, and returns the list of CronTabs that match those selectors.
-func (c *FakeCronTabs) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.CronTabList, err error) {
+func (c *FakeCronTabs) List(opts v1.ListOptions) (result *v1beta1.CronTabList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(crontabsResource, crontabsKind, c.ns, opts), &v1beta1.CronTabList{})
 
@@ -73,14 +71,14 @@ func (c *FakeCronTabs) List(ctx context.Context, opts v1.ListOptions) (result *v
 }
 
 // Watch returns a watch.Interface that watches the requested cronTabs.
-func (c *FakeCronTabs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeCronTabs) Watch(opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(crontabsResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a cronTab and creates it.  Returns the server's representation of the cronTab, and an error, if there is any.
-func (c *FakeCronTabs) Create(ctx context.Context, cronTab *v1beta1.CronTab, opts v1.CreateOptions) (result *v1beta1.CronTab, err error) {
+func (c *FakeCronTabs) Create(cronTab *v1beta1.CronTab) (result *v1beta1.CronTab, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(crontabsResource, c.ns, cronTab), &v1beta1.CronTab{})
 
@@ -91,7 +89,7 @@ func (c *FakeCronTabs) Create(ctx context.Context, cronTab *v1beta1.CronTab, opt
 }
 
 // Update takes the representation of a cronTab and updates it. Returns the server's representation of the cronTab, and an error, if there is any.
-func (c *FakeCronTabs) Update(ctx context.Context, cronTab *v1beta1.CronTab, opts v1.UpdateOptions) (result *v1beta1.CronTab, err error) {
+func (c *FakeCronTabs) Update(cronTab *v1beta1.CronTab) (result *v1beta1.CronTab, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(crontabsResource, c.ns, cronTab), &v1beta1.CronTab{})
 
@@ -102,23 +100,23 @@ func (c *FakeCronTabs) Update(ctx context.Context, cronTab *v1beta1.CronTab, opt
 }
 
 // Delete takes name of the cronTab and deletes it. Returns an error if one occurs.
-func (c *FakeCronTabs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+func (c *FakeCronTabs) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(crontabsResource, c.ns, name, opts), &v1beta1.CronTab{})
+		Invokes(testing.NewDeleteAction(crontabsResource, c.ns, name), &v1beta1.CronTab{})
 
 	return err
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeCronTabs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(crontabsResource, c.ns, listOpts)
+func (c *FakeCronTabs) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(crontabsResource, c.ns, listOptions)
 
 	_, err := c.Fake.Invokes(action, &v1beta1.CronTabList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched cronTab.
-func (c *FakeCronTabs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.CronTab, err error) {
+func (c *FakeCronTabs) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.CronTab, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(crontabsResource, c.ns, name, pt, data, subresources...), &v1beta1.CronTab{})
 
